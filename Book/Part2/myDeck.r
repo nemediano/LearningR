@@ -1,7 +1,7 @@
 # Load and visualize the cards as a DataFrame
 deck <- read.csv("deck.csv", stringsAsFactors=FALSE)
 # Make pristine copy of the deck
-deck2 <-  deck
+# deck2 <-  deck
 # Funtcion to deal a card from the deck
 shuffle <- function (cards) {
   # Random indices to shuffle the cards
@@ -39,7 +39,7 @@ setWar <- function (cards) {
 # All the face cards have 10 value
 # The rest have the numerical value
 setBlackJack <- function (cards) {
-  royals <- any(cards$face == "king", cards$face == "queen", cards$face == "jack")
+  royals <- cards$face == "king" | cards$face == "queen" | cards$face == "jack"
   cards$value[royals] <- 10
   aces <- cards$face == "ace"
   cards$value[aces] <- NA
