@@ -26,21 +26,41 @@ CreateDeck <- function(deck) {
   # A method
   # Set the value of the remaining cards on deck to play War
   SET_WAR <- function() {
-    
+    tmpCopy <- deck
+    aces <- tmpCopy$face == "ace"
+    # This should work by enviroment resolution rules
+    tmpCopy$value[aces] <- 14
+    assign("deck", tmpCopy, envir = parent.env(environment()))
   }
   
   # A method
   # Set the value of the remaining cards on deck to play Hearths
   SET_HEARTHS <- function() {
-    
+    tmpCopy <- deck
+    tmpCopy$value <- 0
+    hearts <- tmpCopy$suit == "hearts"
+    tmpCopy$value[hearts] <- 1
+    queenOfSpades <- tmpCopy$suit == "spades" & tmpCopy$face == "queen"
+    tmpCopy$value[queenOfSpades] <- 13
+    assign("deck", tmpCopy, envir = parent.env(environment()))
   }
   
   # A method
   # Set the value of the remaining cards on deck to play BlackJack
   SET_BLACKJACK <- function() {
-    
+    royals <- deck$face == "king" | deck$face == "queen" | deck$face == "jack"
+    deck$value[royals] <- 10
+    aces <- deckface == "ace"
+    deck$value[aces] <- NA
   }
   
-  # All methods are private "by default", we only expose them here to make them public
-  list(deal = DEAL, shuffle = SHUFFLE, setWar = SET_WAR, setHearths = SET_HEARTHS, setBlackJack = SET_BLACKJACK)
+  # A method
+  # Reset the current deck to the initial pristine copy
+  RESET <- function() {
+    assign("deck", ORIGINAL, envir = parent.env(environment()))
+  }
+  
+  # All methods are private "by default", to make them public we need to expose them here
+  list(deal = DEAL, shuffle = SHUFFLE, setWar = SET_WAR, setHearths = SET_HEARTHS, setBlackJack = SET_BLACKJACK,
+       reset = RESET)
 }
